@@ -13,10 +13,8 @@ class Cop(pygame.sprite.Sprite):
         self.target = None
     def pathfind(self, position, roads, mapsize):
         if not self.moving:
-            print("POS: "+str(position))
             queue = []
             visited = {}
-            print(roads[position[0]][position[1]])
             if roads[position[0]][position[1]] == 1:
                 queue.append([self.pos, None])
             i = None
@@ -34,16 +32,12 @@ class Cop(pygame.sprite.Sprite):
                     else:
                         if i[1]+1 < mapsize[1]:
                             queue.append([[i[0], i[1]+1], i])
-                            print([[i[0], i[1]+1], i])
                         if i[1]-1 > -1:
                             queue.append([[i[0], i[1]-1], i])
-                            print([[i[0], i[1]-1], i])
                         if i[0]+1 < mapsize[0]:
                             queue.append([[i[0]+1, i[1]], i])
-                            print([[i[0]+1, i[1]], i])
                         if i[0]-1 > -1:
                             queue.append([[i[0]-1, i[1]], i])
-                            print([[i[0]-1, i[1]], i])
                 k += 1
                 if k > 10000:
                     break
@@ -63,26 +57,26 @@ class Cop(pygame.sprite.Sprite):
         if self.moving:
             if not self.rect.center == self.target:
                 if self.rect.centerx < self.target[0]:
-                    self.rect.centerx+=4
+                    self.rect.centerx+=8
                 elif self.rect.centerx > self.target[0]:
-                    self.rect.centerx-=4
+                    self.rect.centerx-=8
                 if self.rect.centery < self.target[1]:
-                    self.rect.centery+=4
+                    self.rect.centery+=8
                 elif self.rect.centery > self.target[1]:
-                    self.rect.centery-=4
+                    self.rect.centery-=8
             elif self.rect.center == self.target:
                 self.pos = self.path[0]
                 self.path = self.path[1:len(self.path)]
                 if len(self.path) > 0:
                     self.target = (16+self.path[0][0]*32, 16+self.path[0][1]*32)
                     if self.rect.centerx < self.target[0]:
-                        self.rect.centerx+=4
+                        self.rect.centerx+=8
                     elif self.rect.centerx > self.target[0]:
-                        self.rect.centerx-=4
+                        self.rect.centerx-=8
                     if self.rect.centery < self.target[1]:
-                        self.rect.centery+=4
+                        self.rect.centery+=8
                     elif self.rect.centery > self.target[1]:
-                        self.rect.centery-=4
+                        self.rect.centery-=8
                 else:
                     self.moving = False
                     self.target = None

@@ -1,7 +1,7 @@
 import pygame, pytmx
 from game import objects
 
-builds = []
+builds = ["building"]
 
 def load(id):
     global buildings
@@ -24,4 +24,6 @@ def load(id):
                 buildings.add(t)
             if not p['type'].startswith("road"):
                 listmap[x].append(0)
+    for i in buildings:
+        i.findparking(listmap)
     return tiles, roads, buildings, listmap, mapsize
