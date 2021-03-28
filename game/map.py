@@ -22,7 +22,6 @@ def load(id):
                 listmap[x].append(1)
             if p['type'] in builds:
                 buildings.add(t)
-                listmap[x].append(0)
-            else:
+            if not p['type'].startswith("road"):
                 listmap[x].append(0)
     return tiles, roads, buildings, listmap, mapsize

@@ -18,6 +18,7 @@ roads = pygame.sprite.Group()
 buildings = pygame.sprite.Group()
 tiles, roads, buildings, listmap, mapsize = map.load(1)
 
+
 class MouseSprite(pygame.sprite.Sprite):
     def __init__(self):
         global mouse
