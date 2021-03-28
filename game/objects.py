@@ -9,5 +9,7 @@ class Object(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = [self.pos[0]*32, self.pos[1]*32]
         self.attributes = {}
-    def update(self):
-        pass
+    def update(self, action, mouse):
+        if action == "path":
+            if self.rect.collidepoint(mouse.topleft):
+                mouse.click = True
