@@ -4,8 +4,8 @@ pygame.font.init()
 
 font = pygame.font.Font(None, 24)
 size = 24
-color = [0,0,0]
-window = pygame.surface.Surface([800, 600])
+color = [255,255,255]
+window = pygame.surface.Surface([1280, 960])
 
 def Font(s=24, c=[0,0,0]):
     global font, size, color
@@ -58,7 +58,7 @@ class Image(pygame.sprite.Sprite): #image class that doubles as a button
         window.blit(self.image, self.rect.topleft)
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, text, pos, centered, bc=[0,0,0], c=None):
+    def __init__(self, text, pos, centered=False, bc=[0,0,0], c=None):
         global font, color
         pygame.sprite.Sprite.__init__(self)
         if c == None:
@@ -66,7 +66,8 @@ class Button(pygame.sprite.Sprite):
         else:
             self.render = font.render(str(text), 1, [255, 255, 255])
         self.rect = self.render.get_rect()
-        self.image = pygame.surface.Surface([self.rect.width+10, self.rect.height+10]).fill(list(bc))
+        self.image = pygame.surface.Surface([self.rect.width+10, self.rect.height+10])
+        self.image.fill(list(bc))
         self.image.blit(self.render, [5,5])
         self.rect = self.image.get_rect()
         if centered:
