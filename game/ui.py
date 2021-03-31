@@ -2,14 +2,15 @@ import pygame
 
 pygame.font.init()
 
-font = pygame.font.Font(None, 24)
-size = 24
+font = pygame.font.Font("./font/Air Americana.ttf", 36)
+size = 36
 color = [255,255,255]
 window = pygame.surface.Surface([1280, 960])
 
-def Font(s=24, c=[0,0,0]):
+def Font(s=36, c=[0,0,0]):
     global font, size, color
-    font = pygame.font.Font(None, int(size))
+    font = pygame.font.Font("./font/Air Americana.ttf", int(s))
+    size = s
     color = c
 
 def Text(text, pos, centered=False, dorect=False, c=None):
@@ -88,13 +89,18 @@ class Button(pygame.sprite.Sprite):
         global window
         window.blit(self.image, self.rect.topleft)
 
-def Box(s, p, c=None, centered=False, r=False):
+def Box(s, p, c=None, centered=False, r=False, t=True):
     global window, color
     if c == None:
-        surface = pygame.surface.Surface(list(s)).fill(color)
+        surface = pygame.surface.Surface(list(s))
     else:
-        surface = pygame.surface.Surface(list(s)).fill(list(c))
-    surface.set_alpha(200)
+        surface = pygame.surface.Surface(list(s))
+    if c == None:
+        surface.fill(color)
+    else:
+        surface.fill(list(c))
+    if t:
+        surface.set_alpha(200)
     if centered:
         window.blit(surface, [p[0] - int(s[0]/2), p[1] - int(s[1]/2)])
     else:
