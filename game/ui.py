@@ -9,7 +9,7 @@ size = 36
 color = [255,255,255]
 window = pygame.surface.Surface([1280, 960])
 
-def Font(s=36, c=[0,0,0]):
+def Font(s=36, c=[255,255,255]):
     global font, size, color
     font = pygame.font.Font("./font/Air Americana.ttf", int(s))
     size = s
@@ -71,7 +71,7 @@ class Button(pygame.sprite.Sprite):
         self.rect = self.render.get_rect()
         self.image = pygame.surface.Surface([self.rect.width+10, self.rect.height+10])
         self.image.fill(list(bc))
-        self.image.blit(self.render, [5,5])
+        self.image.blit(self.render, [5,6])
         self.rect = self.image.get_rect()
         if centered:
             self.rect.center = list(pos)

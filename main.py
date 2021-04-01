@@ -24,7 +24,11 @@ crimebuildings = pygame.sprite.Group()
 tiles, roads, buildings, listmap, mapsize, background = map.load(1)
 pointers = pygame.sprite.Group()
 
-
+bb = pygame.sprite.Group()
+ui.Font(20)
+assist = ui.Button("assist business", [0, 0], centered=True, bc = [0, 255, 0])
+food = ui.Button("buy food", [0, 0], centered=True, bc = [255, 193, 23])
+gas = ui.Button("refill gas", [0, 0], centered=True, bc= [255, 193, 23])
 
 class MouseSprite(pygame.sprite.Sprite):
     def __init__(self):
@@ -36,6 +40,7 @@ class MouseSprite(pygame.sprite.Sprite):
         self.click = False
         self.building = None
         self.clickedbuilding = None
+        self.parkingspots = None
 ms = MouseSprite()
 
 def gamepos(pos):
@@ -54,6 +59,7 @@ while running:
             if ms.click:
                 ms.click = False
                 if car.pos == gamepos(ms.rect.topleft):
+                    ms.rect.topleft = mouse
                     buildings.update("buildingc", ms)
                     showmenu = True
                 else:
@@ -94,7 +100,30 @@ while running:
         else:
             ui.Box([290*(int(car.properties["gas"])/100), 40], [15, 805], [0, 255, 0], t=False)
         ui.Text("gas: " + str(round(car.properties["gas"])) + "%", [20, 810])
-        if ms.building != None and not showmenu:
+        if ms.clickedbuilding != None and showmenu:
+            ui.Font(42)
+            text = ui.font.render(ms.clickedbuilding.type, 1, [255, 255, 255])
+            rect = text.get_rect()
+            ui.Box([rect.width+30, 120], [ms.clickedbuilding.rect.centerx, ms.clickedbuilding.rect.top - 65], [0, 0, 0], centered=True)
+            window.blit(text, [ms.clickedbuilding.rect.centerx - rect.width/2, ms.clickedbuilding.rect.top - 120])
+            ui.Font(20, [255, 255, 255])
+            if ms.clickedbuilding.stats["crime"] != None:
+                assist.rect.centerx, assist.rect.top = ms.clickedbuilding.rect.centerx, ms.clickedbuilding.rect.top - 78
+                assist.draw()
+                ui.Font(18, [255, 255, 255])
+                ui.Text(ms.clickedbuilding.stats["crime"] + " in progress!", [ms.clickedbuilding.rect.centerx, ms.clickedbuilding.rect.top - 40], centered=True)
+            elif ms.clickedbuilding.food:
+                food.rect.centerx, food.rect.top = ms.clickedbuilding.rect.centerx, ms.clickedbuilding.rect.top - 78
+                food.draw()
+                ui.Text("no crime here!", [ms.clickedbuilding.rect.centerx, ms.clickedbuilding.rect.top - 40], centered=True)
+            elif ms.clickedbuilding.type.startswith("gas"):
+                gas.rect.centerx, gas.rect.top = ms.clickedbuilding.rect.centerx, ms.clickedbuilding.rect.top - 78
+                gas.draw()
+                ui.Text("no crime here!", [ms.clickedbuilding.rect.centerx, ms.clickedbuilding.rect.top - 40], centered=True)
+            elif ms.clickedbuilding.stats["crime"] == None:
+                ui.Text("no crime here!", [ms.clickedbuilding.rect.centerx, ms.clickedbuilding.rect.top - 50], centered=True)
+
+        elif ms.building != None and not showmenu:
             ui.Font(42)
             text = ui.font.render(ms.building.type, 1, [255, 255, 255])
             rect = text.get_rect()

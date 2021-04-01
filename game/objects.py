@@ -1,5 +1,5 @@
 import pygame, random
-from game.map import builds
+from game.map import builds, foods
 
 class Object(pygame.sprite.Sprite):
     def __init__(self, type, pos):
@@ -7,11 +7,15 @@ class Object(pygame.sprite.Sprite):
         self.type = str(type)
         self.pos = list(pos)
         self.image = pygame.image.load("./images/tiles/"+self.type+".png")
+        self.type = "gas station"
         self.rect = self.image.get_rect()
         self.rect.topleft = [self.pos[0]*64, self.pos[1]*64]
         self.building = False
         self.parking = None
         self.stats = {}
+        self.food = False
+        if self.type in foods:
+            self.food = True
         if self.type in builds:
             self.building = True
             self.stats = {"crime" : None, "stock" : 100, "open" : True, "cooldown" : random.randint(5000, 15000), "cycles":0}
@@ -56,8 +60,10 @@ class Object(pygame.sprite.Sprite):
                         self.stats["maxcooldown"] = self.stats["cooldown"]
         elif action == "building" and self.building and self.rect.collidepoint(mouse.rect.topleft):
             mouse.building = self
-        elif action == "buildingc" and self.building and self.rect.collidepoint(mouse.rect.topleft):
-            mouse.clickedbuilding = self
+        elif action == "buildingc":
+            print(self.rect.collidepoint(mouse.rect.topleft))
+            if self.building and self.rect.collidepoint(mouse.rect.topleft):
+                mouse.clickedbuilding = self
 
 class Pointer(pygame.sprite.Sprite):
     def __init__(self, pos, type, linked):
