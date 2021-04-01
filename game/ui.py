@@ -2,6 +2,8 @@ import pygame
 
 pygame.font.init()
 
+#font link so I don't forget to credit --- https://www.dafont.com/air-americana.font
+
 font = pygame.font.Font("./font/Air Americana.ttf", 36)
 size = 36
 color = [255,255,255]

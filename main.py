@@ -24,6 +24,8 @@ crimebuildings = pygame.sprite.Group()
 tiles, roads, buildings, listmap, mapsize, background = map.load(1)
 pointers = pygame.sprite.Group()
 
+
+
 class MouseSprite(pygame.sprite.Sprite):
     def __init__(self):
         global mouse
@@ -100,7 +102,9 @@ while running:
             window.blit(text, [ms.rect.right + 25, ms.rect.top + 15])
             ui.Font(24)
             if ms.building.stats["crime"] == None:
-                ui.Text("no crime!", [ms.rect.right + 10 + (rect.width+30)/2, ms.rect.bottom + 64], centered=True, c=[0,255,0])
+                ui.Text("no crime!", [ms.rect.right + 10 + (rect.width+30)/2, ms.rect.bottom + 55], centered=True, c=[0,255,0])
+                ui.Font(18)
+                ui.Text("click to move here", [ms.rect.right + 10 + (rect.width+30)/2, ms.rect.bottom + 81], centered=True, c=[255, 255, 255])
             elif ms.building.stats["crime"] != None:
                 if (ms.building.stats["cooldown"]/ms.building.stats["maxcooldown"]) < 0.25:
                     BC = [255, 0, 0]
@@ -112,13 +116,6 @@ while running:
                 ui.Text(str(ms.building.stats["crime"]), [ms.rect.right + 10 + (rect.width+30)/2, ms.rect.bottom + 55], centered=True, c=[255,255,255])
                 ui.Font(18)
                 ui.Text("wave "+str(ms.building.stats["maxcycles"]-ms.building.stats["cycles"]+1)+ " out of " + str(ms.building.stats["maxcycles"]), [ms.rect.right + 10 + (rect.width+30)/2, ms.rect.bottom + 83], centered=True, c=[255,255,255])
-        if ms.clickedbuilding == None: showmenu = False
-        elif showmenu:
-            text = ui.font.render(ms.clickedbuilding.type, 1, [255, 255, 255])
-            rect = text.get_rect()
-            print([ms.clickedbuilding.rect.center, ms.clickedbuilding.rect.top - 130])
-            ui.Box([rect.width + 30, 120], [ms.clickedbuilding.rect.centerx, ms.clickedbuilding.rect.top - 65], [0, 0, 0], centered=True)
-            window.blit(text, [ms.clickedbuilding.rect.centerx - rect.width/2, ms.clickedbuilding.rect.top - 120])
         buildings.update("update", ms, pointers, clock.get_time(), crimebuildings)
         pointers.update()
     pygame.display.flip()

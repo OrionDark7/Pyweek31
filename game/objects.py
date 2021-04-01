@@ -36,7 +36,7 @@ class Object(pygame.sprite.Sprite):
                     mouse.click = True
         elif action == "crime":
             self.stats["crime"] = "robbery"
-            self.stats["cycles"] = random.randint(1,2)
+            self.stats["cycles"] = random.randint(2,2)
             self.stats["maxcycles"] = self.stats["cycles"]
             self.stats["cooldown"] = random.randint(5000, 15000)
             self.stats["maxcooldown"] = self.stats["cooldown"]
@@ -112,13 +112,15 @@ class Pointer(pygame.sprite.Sprite):
             if self.bounces < 3:
                 if self.dir == "up" and self.animationcycle >= 10:
                     self.dir = "down"
+                    self.rect.centery -= (10-self.animationcycle)/2
                 elif self.dir == "down" and self.animationcycle <= 0:
                     self.dir = "up"
+                    self.rect.centery += (10-self.animationcycle)/2
                     self.bounces += 1
                 if self.dir == "up":
-                    self.rect.centery -= self.animationcycle/2
+                    self.rect.centery -= (10-self.animationcycle)/2
                 elif self.dir == "down":
-                    self.rect.centery += self.animationcycle/2
+                    self.rect.centery += (10-self.animationcycle)/2
             else:
                 self.bounces = 0
                 self.animation = None
