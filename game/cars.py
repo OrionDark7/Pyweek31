@@ -7,7 +7,7 @@ class Cop(pygame.sprite.Sprite):
         self.images = {"front":pygame.image.load("./images/cars/cop/front.png"),
                        "back":pygame.image.load("./images/cars/cop/back.png"),
                        "left":pygame.image.load("./images/cars/cop/left.png"),
-                       "right":pygame.image.load("./images/cars/cop/right.png"),}
+                       "right":pygame.image.load("./images/cars/cop/right.png")}
         self.rect = self.image.get_rect()
         self.pos = pos
         self.rect.center = 32+self.pos[0]*64, 32+self.pos[1]*64
@@ -15,6 +15,9 @@ class Cop(pygame.sprite.Sprite):
         self.path = None
         self.moving = False
         self.target = None
+        self.action = None
+        self.assisttime = 1
+        self.maxtime = 1
     def pathfind(self, position, roads, mapsize):
         print(position, self.pos)
         if not self.moving:
@@ -57,7 +60,8 @@ class Cop(pygame.sprite.Sprite):
                 self.path = retrace
                 self.moving = True
                 self.target = (32+self.path[0][0]*64, 32+self.path[0][1]*64)
-    def update(self, window):
+                self.action = "moving"
+    def update(self, window, mouse, clock):
         window.blit(self.image, self.rect.topleft)
         if self.moving:
             gasfactor = 1
@@ -103,4 +107,36 @@ class Cop(pygame.sprite.Sprite):
                         self.image = self.images["back"]
                 else:
                     self.moving = False
+                    self.action = None
                     self.target = None
+        if self.action == "refuel":
+            if self.properties["energy"] < 20:
+                self.properties["gas"] += 0.25
+            elif self.properties["energy"] < 40:
+                self.properties["gas"] += 0.5
+            else:
+                self.properties["gas"] += 1
+            if self.properties["gas"] >= 100:
+                self.properties["gas"] = 100
+                self.action = None
+        if self.action == "assist":
+            if self.properties["energy"] < 20:
+                self.properties["energy"] -= 0.0375
+            elif self.properties["energy"] < 40:
+                self.properties["energy"] -= 0.025
+            else:
+                self.properties["energy"] -= 0.0125
+            self.assisttime -= clock
+            if self.assisttime <= 0:
+                self.assistime = 1
+                self.maxtime = 1
+                self.action = None
+                mouse.clickedbuilding.stats["crime"] = None
+        if self.action == "food":
+            if self.properties["energy"] <= 20:
+                self.properties["energy"] += 2.5
+            else:
+                self.properties["energy"] += 5
+            if self.properties["energy"] >= 100:
+                self.properties["energy"] = 100
+                self.action = None

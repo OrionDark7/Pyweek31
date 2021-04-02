@@ -112,3 +112,30 @@ def Box(s, p, c=None, centered=False, r=False, t=True):
         rv = surface.get_rect()
     return rv
 
+class TextEffect(pygame.sprite.Sprite):
+    def __init__(self, text, pos, duration, velocity=1, direction=-1, centered=True, c=None):
+        global font, color
+        pygame.sprite.Sprite.__init__(self)
+        if c == None:
+            self.image = self.render = font.render(str(text), 1, list(color))
+        else:
+            self.image = self.render = font.render(str(text), 1, list(c))
+        self.rect = self.image.get_rect()
+        if centered:
+            self.rect.center = pos
+        else:
+            self.rect.topleft = pos
+        self.maxduration = int(duration)
+        self.duration = 0
+        self.image.set_alpha(255)
+        self.direction = direction
+        self.velocity = velocity
+    def update(self, clock):
+        global window
+        self.duration += clock
+        if self.duration >= self.maxduration:
+            self.kill()
+        else:
+            self.image.set_alpha(round(255*(self.duration/self.maxduration)))
+            self.rect.centery += self.direction*self.velocity
+            window.blit(self.image, self.rect.topleft)

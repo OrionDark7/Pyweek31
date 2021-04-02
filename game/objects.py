@@ -7,7 +7,6 @@ class Object(pygame.sprite.Sprite):
         self.type = str(type)
         self.pos = list(pos)
         self.image = pygame.image.load("./images/tiles/"+self.type+".png")
-        self.type = "gas station"
         self.rect = self.image.get_rect()
         self.rect.topleft = [self.pos[0]*64, self.pos[1]*64]
         self.building = False
@@ -29,6 +28,8 @@ class Object(pygame.sprite.Sprite):
         elif listmap[self.pos[0]][self.pos[1]-1] > 0:
             self.parking = [self.pos[0], self.pos[1]-1]
     def update(self, action, mouse, pointers=None, clock=0, crimes=None):
+        if not crimes == None and self.stats["crime"] == None:
+            crimes.remove(self)
         if action == "path":
             if self.building:
                 if self.rect.collidepoint(mouse.rect.topleft) and not self.parking == None:

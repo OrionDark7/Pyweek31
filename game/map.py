@@ -1,8 +1,8 @@
 import pygame, pytmx
 from game import objects
 
-builds = ["building", "gas station"]
-foods = ["coffe stand"]
+builds = ["building", "gas station", "coffee stand"]
+foods = ["coffee stand"]
 
 def load(id):
     global buildings
